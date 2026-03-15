@@ -2,16 +2,12 @@
 
 library(ggplot2)
 
-# ler fasta
 lines <- readLines("aligned.fasta")
 
-# identificar headers
 headers <- grep("^>", lines)
 
-# sequência 1
 seq1 <- paste(lines[(headers[1]+1):(headers[2]-1)], collapse="")
 
-# sequência 2
 seq2 <- paste(lines[(headers[2]+1):length(lines)], collapse="")
 
 seq1 <- toupper(seq1)
@@ -20,7 +16,6 @@ seq2 <- toupper(seq2)
 s1 <- strsplit(seq1,"")[[1]]
 s2 <- strsplit(seq2,"")[[1]]
 
-# parâmetros sliding window
 window_size <- 200
 step_size <- 20
 
@@ -44,7 +39,6 @@ data <- data.frame(
   identity = identity
 )
 
-# ORFs (coordenadas típicas de hepadnavírus)
 orfs <- data.frame(
   gene = c("Pol","Surface","Precore","Core","X"),
   start = c(2132,1,1618,1714,1211),
@@ -80,7 +74,6 @@ for(i in 1:nrow(orfs)){
   }
 }
 
-# gráfico
 p <- ggplot() +
   
   geom_line(
@@ -112,7 +105,6 @@ p <- ggplot() +
 
 print(p)
 
-# salvar figura
 ggsave(
   "identity_orf_plot.svg",
   p,
